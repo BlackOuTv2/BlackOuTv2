@@ -1,5 +1,3 @@
-Absolutely! Here's a **powerful, clean, and modern GitHub README intro** tailored to your personality as "BlackOut" — passionate, skilled, and a little witty 😎
-
 ---
 
 # 👋 Hey there! I'm **BlackOut**
