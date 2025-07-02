@@ -1,4 +1,3 @@
----
 
 # 👋 Hey there! I'm **BlackOut**
 
@@ -50,7 +49,6 @@
 [![LinkedIn](https://img.shields.io/badge/LinkedIn-0077B5?style=flat\&logo=linkedin\&logoColor=white)](https://linkedin.com/in/yourprofile)
 [![Gmail](https://img.shields.io/badge/Gmail-D14836?style=flat\&logo=gmail\&logoColor=white)](mailto:your.email@example.com)
 
----
 
 ## ⚡ Fun Fact
 
