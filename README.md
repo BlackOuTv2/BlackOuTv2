@@ -61,5 +61,3 @@
 ### 🎯 Let’s build something *legendary* together.
 
 ---
-
-If you'd like, I can generate this into a ready-to-paste `README.md` file or add animated GitHub trophies, contribution streaks, or live visitor counters. Want that too?
