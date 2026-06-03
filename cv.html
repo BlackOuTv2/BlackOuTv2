@@ -1,0 +1,487 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>BlackOuTv2 — AppSec Engineer | Android RASP Architect</title>
+<style>
+  :root {
+    --bg:     #0a0c10;
+    --bg2:    #0d1117;
+    --card:   #161b22;
+    --border: #21262d;
+    --accent: #58a6ff;
+    --green:  #3fb950;
+    --red:    #f85149;
+    --yellow: #d29922;
+    --purple: #bc8cff;
+    --orange: #ffa657;
+    --text:   #e6edf3;
+    --muted:  #8b949e;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;line-height:1.6}
+
+  /* ── HERO ── */
+  .hero{
+    min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;
+    text-align:center;padding:60px 24px;position:relative;overflow:hidden;
+    background:radial-gradient(ellipse 120% 80% at 50% -10%,rgba(88,166,255,.08),transparent);
+  }
+  .hero::before{
+    content:'';position:absolute;inset:0;
+    background:url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%2330363d' fill-opacity='0.3'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+    pointer-events:none;opacity:.4;
+  }
+
+  .avatar-ring{
+    width:110px;height:110px;border-radius:50%;
+    border:3px solid transparent;
+    background:linear-gradient(var(--card),var(--card)) padding-box,
+               linear-gradient(135deg,#58a6ff,#3fb950,#bc8cff) border-box;
+    display:flex;align-items:center;justify-content:center;
+    font-size:42px;margin-bottom:24px;
+    animation:pulse 3s ease-in-out infinite;
+  }
+  @keyframes pulse{0%,100%{box-shadow:0 0 0 0 rgba(88,166,255,.3)}50%{box-shadow:0 0 0 12px rgba(88,166,255,0)}}
+
+  .hero-name{
+    font-size:clamp(36px,6vw,64px);font-weight:800;letter-spacing:-2px;
+    background:linear-gradient(135deg,#e6edf3 20%,#58a6ff 60%,#bc8cff 100%);
+    -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+    margin-bottom:12px;
+  }
+  .hero-title{font-size:clamp(14px,2vw,18px);color:var(--muted);margin-bottom:20px;letter-spacing:.3px}
+  .hero-quote{
+    font-size:clamp(13px,1.8vw,16px);font-style:italic;
+    color:var(--accent);border-left:3px solid var(--accent);
+    padding:10px 18px;margin:0 auto 32px;max-width:600px;text-align:left;
+    background:rgba(88,166,255,.05);border-radius:0 8px 8px 0;
+  }
+
+  .socials{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-bottom:32px}
+  .social-btn{
+    display:inline-flex;align-items:center;gap:7px;
+    padding:8px 16px;border-radius:8px;font-size:13px;font-weight:600;
+    text-decoration:none;transition:transform .15s,opacity .15s;border:1px solid transparent;
+  }
+  .social-btn:hover{transform:translateY(-2px);opacity:.9}
+  .btn-tg  {background:#1d3a5c;border-color:#2CA5E0;color:#2CA5E0}
+  .btn-li  {background:#0e2033;border-color:#0077B5;color:#0077B5}
+  .btn-ig  {background:#3a1228;border-color:#E4405F;color:#E4405F}
+  .btn-gh  {background:#1c2128;border-color:#58a6ff;color:#58a6ff}
+
+  .hero-nav{display:flex;gap:8px;justify-content:center;flex-wrap:wrap}
+  .nav-chip{
+    padding:6px 14px;border-radius:20px;font-size:12px;font-weight:600;
+    background:var(--card);border:1px solid var(--border);color:var(--muted);
+    text-decoration:none;transition:all .15s;
+  }
+  .nav-chip:hover{border-color:var(--accent);color:var(--accent)}
+
+  /* ── LAYOUT ── */
+  .container{max-width:1080px;margin:0 auto;padding:0 24px 100px}
+
+  /* ── SECTION ── */
+  section{margin-top:80px}
+  .sec-label{
+    font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;
+    color:var(--accent);margin-bottom:8px;
+  }
+  .sec-title{font-size:28px;font-weight:800;color:var(--text);margin-bottom:24px;letter-spacing:-.5px}
+
+  /* ── CARDS ── */
+  .card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:24px;margin-bottom:16px}
+  .card-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:16px}
+  .card h3{font-size:16px;font-weight:700;color:var(--text);margin-bottom:10px;display:flex;align-items:center;gap:8px}
+
+  /* ── FINDING CARD ── */
+  .finding{
+    display:flex;align-items:flex-start;gap:14px;
+    padding:16px;background:var(--card);border:1px solid var(--border);
+    border-radius:10px;margin-bottom:10px;
+    transition:border-color .15s;
+  }
+  .finding:hover{border-color:rgba(88,166,255,.3)}
+  .finding-sev{
+    flex-shrink:0;width:44px;height:44px;border-radius:8px;
+    display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:800;
+  }
+  .sev-c{background:rgba(248,81,73,.15);color:var(--red);border:1px solid rgba(248,81,73,.3)}
+  .sev-h{background:rgba(255,166,87,.15);color:var(--orange);border:1px solid rgba(255,166,87,.3)}
+  .finding-body{}
+  .finding-title{font-weight:700;font-size:14px;color:var(--text);margin-bottom:3px}
+  .finding-desc{font-size:12px;color:var(--muted);line-height:1.5}
+
+  /* ── RASP ── */
+  .rasp-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:8px}
+  .rasp-item{
+    background:rgba(63,185,80,.06);border:1px solid rgba(63,185,80,.2);
+    border-radius:8px;padding:10px 12px;font-size:12px;font-weight:600;
+    color:var(--green);display:flex;align-items:center;gap:6px;
+  }
+
+  /* ── CRYPTO ── */
+  .crypto-stack{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
+  .crypto-chip{
+    background:rgba(210,153,34,.08);border:1px solid rgba(210,153,34,.3);
+    color:var(--yellow);border-radius:6px;padding:4px 12px;font-size:12px;font-weight:600;
+    font-family:monospace;
+  }
+
+  /* ── RESEARCH ── */
+  .research-card{
+    background:var(--card);border:1px solid var(--border);border-radius:12px;
+    overflow:hidden;margin-bottom:16px;
+  }
+  .research-header{
+    padding:20px 24px;border-bottom:1px solid var(--border);
+    display:flex;align-items:center;gap:12px;
+  }
+  .research-icon{
+    width:40px;height:40px;border-radius:8px;
+    background:rgba(88,166,255,.1);border:1px solid rgba(88,166,255,.2);
+    display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0;
+  }
+  .research-body{padding:20px 24px}
+
+  /* ── STAT PILLS ── */
+  .stat-row{display:flex;gap:8px;flex-wrap:wrap;margin:12px 0}
+  .stat-pill{
+    background:rgba(88,166,255,.08);border:1px solid rgba(88,166,255,.2);
+    color:var(--accent);border-radius:20px;padding:4px 12px;font-size:12px;font-weight:700;
+  }
+  .stat-pill.green{background:rgba(63,185,80,.08);border-color:rgba(63,185,80,.2);color:var(--green)}
+  .stat-pill.red  {background:rgba(248,81,73,.08);border-color:rgba(248,81,73,.2);color:var(--red)}
+  .stat-pill.yellow{background:rgba(210,153,34,.08);border-color:rgba(210,153,34,.2);color:var(--yellow)}
+
+  /* ── TOOLS ── */
+  .tool-grid{display:flex;gap:8px;flex-wrap:wrap}
+  .tool{
+    background:var(--card);border:1px solid var(--border);border-radius:8px;
+    padding:8px 14px;font-size:13px;font-weight:600;color:var(--text);
+    display:flex;align-items:center;gap:6px;
+  }
+  .tool .dot{width:6px;height:6px;border-radius:50%;background:var(--accent)}
+
+  /* ── TABLE ── */
+  .tbl{width:100%;border-collapse:collapse;font-size:13px}
+  .tbl th{background:#1c2128;color:var(--muted);font-size:11px;text-transform:uppercase;
+          letter-spacing:.5px;padding:10px 14px;text-align:left;border-bottom:1px solid var(--border)}
+  .tbl td{padding:10px 14px;border-bottom:1px solid #21262d;vertical-align:top}
+  .tbl tr:last-child td{border:none}
+  .tbl tr:hover td{background:rgba(255,255,255,.02)}
+  .tbl-wrap{background:var(--card);border:1px solid var(--border);border-radius:12px;overflow:hidden}
+
+  /* ── EXPERTISE ── */
+  .exp-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+  @media(max-width:600px){.exp-grid,.card-grid{grid-template-columns:1fr}}
+
+  /* ── CODE ── */
+  .code-block{
+    background:#0d1117;border:1px solid var(--border);border-radius:8px;
+    padding:16px;font-family:'JetBrains Mono','SFMono-Regular',Consolas,monospace;
+    font-size:12px;color:#c9d1d9;line-height:1.7;overflow-x:auto;margin-top:12px;
+  }
+  .code-block .kw{color:#ff7b72}
+  .code-block .str{color:#a5d6ff}
+  .code-block .com{color:#8b949e}
+  .code-block .fn{color:#d2a8ff}
+  .code-block .val{color:#ffa657}
+
+  /* ── DIVIDER ── */
+  hr{border:none;border-top:1px solid var(--border);margin:40px 0}
+
+  /* ── FOOTER ── */
+  footer{
+    text-align:center;padding:40px 24px;border-top:1px solid var(--border);
+    color:var(--muted);font-size:13px;
+  }
+  footer a{color:var(--accent);text-decoration:none}
+
+  /* ── PRINT ── */
+  @media print{
+    body{background:#fff;color:#000}
+    .hero{min-height:auto;padding:30px}
+    .hero-name{-webkit-text-fill-color:#000;background:none;color:#000}
+  }
+</style>
+</head>
+<body>
+
+<!-- ══ HERO ══════════════════════════════════════════════════════════════ -->
+<div class="hero">
+  <div class="avatar-ring">🛡️</div>
+
+  <div class="hero-name">BlackOuTv2</div>
+  <div class="hero-title">
+    AppSec Engineer &nbsp;·&nbsp; Android RASP Architect &nbsp;·&nbsp; Mobile RE × AI
+  </div>
+
+  <div class="hero-quote">
+    "The same engineer who writes the bypass also writes the C++ that detects it."
+  </div>
+
+  <div class="socials">
+    <a class="social-btn btn-tg" href="https://t.me/BlackOuTv1">✈️ @BlackOuTv1</a>
+    <a class="social-btn btn-li" href="https://www.linkedin.com/in/black0ut/">💼 LinkedIn</a>
+    <a class="social-btn btn-ig" href="https://www.instagram.com/cyberxblackout/">📸 @cyberxblackout</a>
+    <a class="social-btn btn-gh" href="https://github.com/BlackOuTv2">🐙 GitHub</a>
+  </div>
+
+  <div class="hero-nav">
+    <a class="nav-chip" href="#offensive">⚔️ Offensive</a>
+    <a class="nav-chip" href="#defensive">🛡️ Project BlackOuT</a>
+    <a class="nav-chip" href="#research">🔬 Research</a>
+    <a class="nav-chip" href="#tools">🛠️ Tools</a>
+    <a class="nav-chip" href="#expertise">📊 Expertise</a>
+  </div>
+</div>
+
+<div class="container">
+
+<!-- ══ ABOUT ══════════════════════════════════════════════════════════════ -->
+<section>
+  <div class="sec-label">About</div>
+  <div class="sec-title">Who I Am</div>
+  <div class="card">
+    <div class="code-block">
+<span class="kw">profile</span> = {
+  <span class="str">"role"</span>      : <span class="val">"AppSec Engineer | Android RASP Architect | Mobile RE × AI"</span>,
+  <span class="str">"offensive"</span> : <span class="val">"7+ Mobile VAPT engagements | CVSS 9.8 Critical | RCE | BOLA | DRM bypass"</span>,
+  <span class="str">"defensive"</span> : <span class="val">"Project BlackOuT — 100+ layer Android RASP (C++/NDK AAR SDK)"</span>,
+  <span class="str">"re_focus"</span>  : [<span class="val">"DexProtector"</span>, <span class="val">"DexShell VMP"</span>, <span class="val">"Widevine CDM"</span>, <span class="val">"Flutter Dart VM"</span>],
+  <span class="str">"crypto"</span>    : [<span class="val">"AES-256-GCM"</span>, <span class="val">"ECDH P-256 + HKDF-SHA256"</span>, <span class="val">"Blowfish ECB/CBC"</span>, <span class="val">"BoringSSL"</span>],
+  <span class="str">"principle"</span> : <span class="val">"Attacker tradecraft meets builder discipline"</span>,
+}
+    </div>
+  </div>
+</section>
+
+<!-- ══ OFFENSIVE ══════════════════════════════════════════════════════════ -->
+<section id="offensive">
+  <div class="sec-label">Offensive Security</div>
+  <div class="sec-title">⚔️ Mobile VAPT — 7+ Engagements</div>
+
+  <div class="finding">
+    <div class="finding-sev sev-c">9.8<br><span style="font-size:9px">CVSS</span></div>
+    <div class="finding-body">
+      <div class="finding-title">Critical IDOR — Mass PII Scraping + Admin Takeover</div>
+      <div class="finding-desc">Full account enumeration, mass extraction of user PII, and complete administrative privilege escalation. Working exploit chain delivered.</div>
+    </div>
+  </div>
+
+  <div class="finding">
+    <div class="finding-sev sev-c">💳</div>
+    <div class="finding-body">
+      <div class="finding-title">Live Payment Gateway Key Exposure</div>
+      <div class="finding-desc">Razorpay & EasyBuzz API keys exposed in production traffic. Full PoC demonstrating unauthorized transaction capability.</div>
+    </div>
+  </div>
+
+  <div class="finding">
+    <div class="finding-sev sev-c">💥</div>
+    <div class="finding-body">
+      <div class="finding-title">RCE Vectors + BOLA + API Disclosure</div>
+      <div class="finding-desc">Remote code execution surface identified across multiple targets. Broken Object Level Authorization leading to cross-account data access.</div>
+    </div>
+  </div>
+
+  <div class="finding">
+    <div class="finding-sev sev-h">🔓</div>
+    <div class="finding-body">
+      <div class="finding-title">DexProtector Asset Decryption — Frida Oracle Technique</div>
+      <div class="finding-desc">Custom Frida oracle to dump Blowfish P_ARRAY internals at runtime. ECB/CBC mode detection. Offline Python decryption pipeline — reusable attack playbook.</div>
+    </div>
+  </div>
+
+  <div class="finding">
+    <div class="finding-sev sev-h">📱</div>
+    <div class="finding-body">
+      <div class="finding-title">Flutter RE — Dart VM + SSL Pinning Bypass</div>
+      <div class="finding-desc">Blutter-based Dart VM symbol recovery. Flutter SSL pinning bypass, Dart integrity bypass, geofence/GPS bypass. Permanent APK patching across 3+ production targets.</div>
+    </div>
+  </div>
+
+  <div class="finding">
+    <div class="finding-sev sev-h">🎬</div>
+    <div class="finding-body">
+      <div class="finding-title">Widevine CDM Architecture Weaknesses + DRM/HLS Bypass</div>
+      <div class="finding-desc">Identified architectural weaknesses in Widevine CDM L3 implementation. DRM-protected HLS content extraction via runtime interception.</div>
+    </div>
+  </div>
+
+  <p style="margin-top:14px;font-size:13px;color:var(--muted);font-style:italic">
+    ✦ Every engagement ends with a <strong style="color:var(--text)">working exploit chain</strong> — not just a report.
+  </p>
+</section>
+
+<!-- ══ DEFENSIVE ══════════════════════════════════════════════════════════ -->
+<section id="defensive">
+  <div class="sec-label">Defensive Security</div>
+  <div class="sec-title">🛡️ Project BlackOuT</div>
+
+  <div class="card" style="border-color:rgba(63,185,80,.25)">
+    <h3 style="color:var(--green)">
+      🛡️ 100+ Layer Android RASP SDK
+      <span style="font-size:12px;font-weight:400;color:var(--muted);margin-left:8px">C++ / NDK / AAR · Independently architected & shipped</span>
+    </h3>
+
+    <div class="stat-row">
+      <span class="stat-pill green">100+ Detection Layers</span>
+      <span class="stat-pill green">C++ / NDK</span>
+      <span class="stat-pill green">AAR SDK</span>
+      <span class="stat-pill green">Zero Java Surface</span>
+      <span class="stat-pill green">Drop-in Integration</span>
+    </div>
+
+    <div style="margin:16px 0 10px;font-size:12px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.6px">Detection Coverage</div>
+    <div class="rasp-grid">
+      <div class="rasp-item">✅ Frida (4-vector)</div>
+      <div class="rasp-item">✅ LSPosed modules</div>
+      <div class="rasp-item">✅ Zygisk detection</div>
+      <div class="rasp-item">✅ APatch KPM</div>
+      <div class="rasp-item">✅ SusFS anomaly</div>
+      <div class="rasp-item">✅ TrickyStore spoof</div>
+      <div class="rasp-item">✅ KernelSU audit</div>
+      <div class="rasp-item">✅ LKM inspection</div>
+      <div class="rasp-item">✅ ARM64 prologue</div>
+      <div class="rasp-item">✅ Text-seg SHA-256</div>
+      <div class="rasp-item">✅ Inline hook detect</div>
+      <div class="rasp-item">✅ GOT/PLT tamper</div>
+      <div class="rasp-item">✅ 15+ more vectors</div>
+    </div>
+
+    <div style="margin:16px 0 10px;font-size:12px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.6px">Crypto Stack</div>
+    <div class="crypto-stack">
+      <span class="crypto-chip">AES-256-GCM</span>
+      <span class="crypto-chip">ECDH P-256</span>
+      <span class="crypto-chip">HKDF-SHA256</span>
+      <span class="crypto-chip">BoringSSL</span>
+      <span class="crypto-chip">Ephemeral Key Exchange</span>
+    </div>
+  </div>
+</section>
+
+<!-- ══ RESEARCH ══════════════════════════════════════════════════════════ -->
+<section id="research">
+  <div class="sec-label">Published Research</div>
+  <div class="sec-title">🔬 DexShell Android Packer — Deep RE</div>
+
+  <div class="research-card">
+    <div class="research-header">
+      <div class="research-icon">🔬</div>
+      <div>
+        <div style="font-weight:700;font-size:15px">DexShell / DexProtectX — Complete Reverse Engineering</div>
+        <div style="font-size:12px;color:var(--muted);margin-top:2px">v26 + v29 · Static + Dynamic Analysis · 11 Anti-Tamper Layers</div>
+      </div>
+      <div style="margin-left:auto;display:flex;gap:8px;flex-shrink:0">
+        <a href="https://github.com/BlackOuTv2/DexShell-Research" style="text-decoration:none;background:rgba(88,166,255,.1);border:1px solid rgba(88,166,255,.3);color:var(--accent);border-radius:6px;padding:5px 12px;font-size:12px;font-weight:600">GitHub →</a>
+        <a href="https://blackoutv2.github.io/DexShell-Research" style="text-decoration:none;background:rgba(63,185,80,.1);border:1px solid rgba(63,185,80,.3);color:var(--green);border-radius:6px;padding:5px 12px;font-size:12px;font-weight:600">Diagrams →</a>
+      </div>
+    </div>
+    <div class="research-body">
+      <div class="stat-row">
+        <span class="stat-pill">1,448 VMP Methods</span>
+        <span class="stat-pill">11 Anti-Tamper Layers</span>
+        <span class="stat-pill green">All Bypassed</span>
+        <span class="stat-pill red">AOSP platform.pk8 Found</span>
+        <span class="stat-pill yellow">Plaintext Credentials</span>
+      </div>
+
+      <div class="tbl-wrap" style="margin-top:16px">
+        <table class="tbl">
+          <thead><tr><th>Area</th><th>v26</th><th>v29</th></tr></thead>
+          <tbody>
+            <tr><td>VMP Model</td><td>Bytecode interpreter (256-opcode ISA)</td><td style="color:var(--green)"><strong>Native AOT compiler</strong></td></tr>
+            <tr><td>JNI Names</td><td>ASCII (K.s, K.b, N.invoke)</td><td style="color:var(--purple)"><strong>Runic Unicode (ᛴᲆᛶ, N.ᛱᛱ᛽)</strong></td></tr>
+            <tr><td>New in v29</td><td>—</td><td>InstrumentationHijacker · DexHeaderRestore · delayed_detection</td></tr>
+            <tr><td>Classes hidden</td><td>0</td><td><strong>514 in encrypted runtime DEX</strong></td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div style="margin-top:16px;font-size:13px;color:var(--muted)">
+        <strong style="color:var(--text)">Key findings:</strong>
+        AOSP <code style="background:rgba(248,81,73,.1);color:var(--red);padding:1px 5px;border-radius:3px">platform.pk8</code> signing key bundled in APK (system-level signing capability) ·
+        Plaintext credentials in SharedPreferences ·
+        All 11 detection layers documented and bypassed with working Frida scripts.
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ TOOLS ══════════════════════════════════════════════════════════════ -->
+<section id="tools">
+  <div class="sec-label">Tooling</div>
+  <div class="sec-title">🛠️ Tools I Live In</div>
+
+  <div class="exp-grid">
+    <div class="card">
+      <h3>🔍 Reverse Engineering</h3>
+      <div class="tool-grid">
+        <div class="tool"><span class="dot" style="background:#ff6b35"></span>Frida</div>
+        <div class="tool"><span class="dot" style="background:#4A90D9"></span>IDA Pro</div>
+        <div class="tool"><span class="dot" style="background:#58a6ff"></span>radare2</div>
+        <div class="tool"><span class="dot" style="background:#ff0000"></span>Ghidra</div>
+        <div class="tool"><span class="dot" style="background:#3fb950"></span>JADX</div>
+        <div class="tool"><span class="dot" style="background:#bc8cff"></span>Blutter</div>
+        <div class="tool"><span class="dot" style="background:#d29922"></span>baksmali</div>
+      </div>
+    </div>
+    <div class="card">
+      <h3>⚙️ Development</h3>
+      <div class="tool-grid">
+        <div class="tool"><span class="dot" style="background:#3776AB"></span>Python</div>
+        <div class="tool"><span class="dot" style="background:#00599C"></span>C++ / NDK</div>
+        <div class="tool"><span class="dot" style="background:#3DDC84"></span>Android SDK</div>
+        <div class="tool"><span class="dot" style="background:#d29922"></span>BoringSSL</div>
+        <div class="tool"><span class="dot" style="background:#F7DF1E"></span>JavaScript</div>
+        <div class="tool"><span class="dot" style="background:#ED8B00"></span>Java / Smali</div>
+        <div class="tool"><span class="dot" style="background:#58a6ff"></span>ADB</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ EXPERTISE ══════════════════════════════════════════════════════════ -->
+<section id="expertise">
+  <div class="sec-label">Expertise</div>
+  <div class="sec-title">📊 Capability Matrix</div>
+
+  <div class="tbl-wrap">
+    <table class="tbl">
+      <thead><tr><th>Domain</th><th>Capability</th><th>Level</th></tr></thead>
+      <tbody>
+        <tr><td>Android Packers</td><td>DexShell, DexProtector, PairIP, custom VMP containers</td><td><span style="color:var(--green)">●●●●●</span></td></tr>
+        <tr><td>Dynamic Instrumentation</td><td>Frida scripting, Gadget/Zygisk attach, hook bypass</td><td><span style="color:var(--green)">●●●●●</span></td></tr>
+        <tr><td>Android RASP</td><td>C++/NDK SDK design, 100+ detection vectors, crypto integration</td><td><span style="color:var(--green)">●●●●●</span></td></tr>
+        <tr><td>Native RE</td><td>ARM64 disassembly, ELF RELA, JNI vtable, prologue analysis</td><td><span style="color:var(--green)">●●●●●</span></td></tr>
+        <tr><td>Flutter RE</td><td>Blutter, Dart VM internals, SSL bypass, permanent patching</td><td><span style="color:var(--green)">●●●●○</span></td></tr>
+        <tr><td>Cryptography</td><td>AES-GCM, ECDH, HKDF, BoringSSL, Blowfish P_ARRAY analysis</td><td><span style="color:var(--green)">●●●●○</span></td></tr>
+        <tr><td>API Security</td><td>BOLA, IDOR, auth bypass, payment key exposure</td><td><span style="color:var(--green)">●●●●○</span></td></tr>
+        <tr><td>DRM / Content Protection</td><td>Widevine CDM, HLS bypass, DRM L3 weaknesses</td><td><span style="color:var(--green)">●●●○○</span></td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+</div>
+
+<footer>
+  <div style="margin-bottom:12px;font-size:16px;font-style:italic;color:var(--accent)">
+    "The same engineer who writes the bypass also writes the C++ that detects it."
+  </div>
+  <div style="display:flex;justify-content:center;gap:20px;flex-wrap:wrap;margin-bottom:12px">
+    <a href="https://t.me/BlackOuTv1">✈️ @BlackOuTv1</a>
+    <a href="https://www.linkedin.com/in/black0ut/">💼 LinkedIn</a>
+    <a href="https://www.instagram.com/cyberxblackout/">📸 @cyberxblackout</a>
+    <a href="https://github.com/BlackOuTv2">🐙 GitHub</a>
+    <a href="https://blackoutv2.github.io/DexShell-Research">🔬 Research</a>
+  </div>
+  <div style="color:var(--muted)">BlackOuTv2 · AppSec Engineer · Android RASP Architect · Mobile RE × AI</div>
+</footer>
+
+</body>
+</html>
